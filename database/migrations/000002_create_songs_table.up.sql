@@ -1,0 +1,9 @@
+CREATE TABLE songs (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    artist VARCHAR(100) NOT NULL,
+    album_cover VARCHAR(255),
+    file_path VARCHAR(255),
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
