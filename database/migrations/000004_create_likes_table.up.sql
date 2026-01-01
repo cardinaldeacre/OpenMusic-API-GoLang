@@ -1,0 +1,6 @@
+CREATE TABLE likes (
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    song_id INTEGER REFERENCES songs(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, song_id)
+);
