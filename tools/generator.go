@@ -27,9 +27,10 @@ func main() {
 
 	// file yang akan dibuat
 	files := map[string]string{
-		"repositories/" + data.LowerName + "_repository.go": repoTemplate,
-		"services/" + data.LowerName + "_service.go":        serviceTemplate,
-		"controllers/" + data.LowerName + "_controller.go":  controllerTemplate,
+		"repositories/" + data.LowerName + "_repository.go":      repoInterfaceTemplate,
+		"repositories/" + data.LowerName + "_repository_impl.go": repoImplTemplate,
+		"services/" + data.LowerName + "_service.go":             serviceTemplate,
+		"controllers/" + data.LowerName + "_controller.go":       controllerTemplate,
 	}
 
 	for path, temp := range files {
@@ -47,14 +48,32 @@ func main() {
 
 // --- TEMPLATES ---
 
-const repoTemplate = `package repositories
-import "gorm.io/gorm"
+const repoInterfaceTemplate = `package repositories
+import (
+	"context"
+	"open-music/model/domain"
+)
 
-type {{.Name}}Repository interface {}
-type {{.LowerName}}Repository struct { db *gorm.DB }
+type {{.Name}}Repository interface {
+	Create(ctx context.Context, data *domain.{{.Name}}) error
+	// Tambahkan method lainnya di sini
+}`
+
+const repoImplTemplate = `package repositories
+import (
+	"context"
+	"open-music/model/domain"
+	"gorm.io/gorm"
+)
+
+type {{.Name}}RepositoryImpl struct { db *gorm.DB }
 
 func New{{.Name}}Repository(db *gorm.DB) {{.Name}}Repository {
-	return &{{.LowerName}}Repository{db}
+	return &{{.Name}}RepositoryImpl{db}
+}
+
+func (r *{{.Name}}RepositoryImpl) Create(ctx context.Context, data *domain.{{.Name}}) error {
+	return r.db.WithContext(ctx).Create(data).Error
 }`
 
 const serviceTemplate = `package services
