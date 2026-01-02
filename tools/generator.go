@@ -51,7 +51,7 @@ func main() {
 const repoInterfaceTemplate = `package repositories
 import (
 	"context"
-	"open-music/model/domain"
+	"github.com/cardinaldeacre/OpenMusic-API-GoLang/model/domain"
 )
 
 type {{.Name}}Repository interface {
@@ -62,7 +62,7 @@ type {{.Name}}Repository interface {
 const repoImplTemplate = `package repositories
 import (
 	"context"
-	"open-music/model/domain"
+	"github.com/cardinaldeacre/OpenMusic-API-GoLang/model/domain"
 	"gorm.io/gorm"
 )
 
@@ -77,7 +77,7 @@ func (r *{{.Name}}RepositoryImpl) Create(ctx context.Context, data *domain.{{.Na
 }`
 
 const serviceTemplate = `package services
-import "open-music/repositories"
+import "github.com/cardinaldeacre/OpenMusic-API-GoLang/repositories"
 
 type {{.Name}}Service interface {}
 type {{.LowerName}}Service struct { repo repositories.{{.Name}}Repository }
@@ -88,7 +88,7 @@ func New{{.Name}}Service(repo repositories.{{.Name}}Repository) {{.Name}}Service
 
 const controllerTemplate = `package controllers
 import (
-	"open-music/services"
+	"github.com/cardinaldeacre/OpenMusic-API-GoLang/services"
 	"github.com/gofiber/fiber/v2"
 )
 
